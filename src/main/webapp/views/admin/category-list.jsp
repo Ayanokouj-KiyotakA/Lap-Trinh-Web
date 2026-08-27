@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <html>
 <head><title>Danh sách Category</title></head>
 <body>
@@ -18,10 +17,10 @@
             <tr>
                 <td>${STT.index + 1}</td>
 
-                <c:if test="${cate.images != null and fn:startsWith(cate.images, 'https')}">
+                <c:if test="${cate.images.substring(0,5)=='https'}">
                     <c:url value="${cate.images}" var="imgUrl"></c:url>
                 </c:if>
-                <c:if test="${cate.images != null and !fn:startsWith(cate.images, 'https')}">
+                <c:if test="${cate.images.substring(0,5)!='https'}">
                     <c:url value="/image?fname=${cate.images}" var="imgUrl"></c:url>
                 </c:if>
 

@@ -12,15 +12,13 @@ public class UserDao implements IUserDao {
 	@Override
 	public AppUser findByUserName(String username) {
 		EntityManager enma = JpaConfig.getEntityManager();
+		String jpql = "SELECT u FROM AppUser u WHERE u.userName = :username";
 		try {
-			String jpql = "SELECT u FROM AppUser u WHERE u.userName = :username";
 			TypedQuery<AppUser> query = enma.createQuery(jpql, AppUser.class);
 			query.setParameter("username", username);
 			return query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
-		} finally {
-			enma.close();
 		}
 	}
 

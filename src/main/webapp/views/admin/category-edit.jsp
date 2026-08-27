@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <html>
 <head><title>Sửa Category</title></head>
 <body>
@@ -14,10 +13,10 @@
         <label>Link ảnh (nếu không upload file):</label><br>
         <input type="text" name="images" value="${cate.images}"><br>
 
-        <c:if test="${cate.images != null and fn:startsWith(cate.images, 'https')}">
+        <c:if test="${cate.images.substring(0,5)=='https'}">
             <c:url value="${cate.images}" var="imgUrl"></c:url>
         </c:if>
-        <c:if test="${cate.images != null and !fn:startsWith(cate.images, 'https')}">
+        <c:if test="${cate.images.substring(0,5)!='https'}">
             <c:url value="/image?fname=${cate.images}" var="imgUrl"></c:url>
         </c:if>
         <img height="120" width="160" src="${imgUrl}" /><br>

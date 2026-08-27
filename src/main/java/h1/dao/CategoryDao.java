@@ -71,11 +71,7 @@ public class CategoryDao implements ICategoryDao {
 	@Override
 	public Category findById(int cateid) {
 		EntityManager enma = JpaConfig.getEntityManager();
-		try {
-			return enma.find(Category.class, cateid);
-		} finally {
-			enma.close();
-		}
+		return enma.find(Category.class, cateid);
 	}
 
 	@Override
@@ -88,57 +84,39 @@ public class CategoryDao implements ICategoryDao {
 			return query.getSingleResult();
 		} catch (NoResultException e) {
 			return null; // không tìm thấy -> coi như chưa tồn tại
-		} finally {
-			enma.close();
 		}
 	}
 
 	@Override
 	public List<Category> findAll() {
 		EntityManager enma = JpaConfig.getEntityManager();
-		try {
-			TypedQuery<Category> query = enma.createNamedQuery("Category.findAll", Category.class);
-			return query.getResultList();
-		} finally {
-			enma.close();
-		}
+		TypedQuery<Category> query = enma.createNamedQuery("Category.findAll", Category.class);
+		return query.getResultList();
 	}
 
 	@Override
 	public List<Category> searchByName(String catname) {
 		EntityManager enma = JpaConfig.getEntityManager();
-		try {
-			String jpql = "SELECT c FROM Category c WHERE c.categoryname LIKE :catname";
-			TypedQuery<Category> query = enma.createQuery(jpql, Category.class);
-			query.setParameter("catname", "%" + catname + "%");
-			return query.getResultList();
-		} finally {
-			enma.close();
-		}
+		String jpql = "SELECT c FROM Category c WHERE c.categoryname LIKE :catname";
+		TypedQuery<Category> query = enma.createQuery(jpql, Category.class);
+		query.setParameter("catname", "%" + catname + "%");
+		return query.getResultList();
 	}
 
 	@Override
 	public List<Category> findAll(int page, int pagesize) {
 		EntityManager enma = JpaConfig.getEntityManager();
-		try {
-			TypedQuery<Category> query = enma.createNamedQuery("Category.findAll", Category.class);
-			query.setFirstResult(page * pagesize);
-			query.setMaxResults(pagesize);
-			return query.getResultList();
-		} finally {
-			enma.close();
-		}
+		TypedQuery<Category> query = enma.createNamedQuery("Category.findAll", Category.class);
+		query.setFirstResult(page * pagesize);
+		query.setMaxResults(pagesize);
+		return query.getResultList();
 	}
 
 	@Override
 	public int count() {
 		EntityManager enma = JpaConfig.getEntityManager();
-		try {
-			String jpql = "SELECT count(c) FROM Category c";
-			Query query = enma.createQuery(jpql);
-			return ((Long) query.getSingleResult()).intValue();
-		} finally {
-			enma.close();
-		}
+		String jpql = "SELECT count(c) FROM Category c";
+		Query query = enma.createQuery(jpql);
+		return ((Long) query.getSingleResult()).intValue();
 	}
 }
