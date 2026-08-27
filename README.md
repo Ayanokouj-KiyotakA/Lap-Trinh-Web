@@ -1,4 +1,4 @@
-# bai_tap_jpa — Login (Cookie/Session) + CRUD Category bằng JPA/Hibernate
+# bai_tap_02 — Login (Cookie/Session) + CRUD Category bằng JPA/Hibernate
 
 Bài tập ngày 27/08/2026: viết lại Bài 1 (Login) và CRUD Category bằng **JPA API (Hibernate)** thay vì JDBC thuần.
 
@@ -33,7 +33,7 @@ New-Item -ItemType Directory -Force -Path "C:\upload_jpa"
 - Import vào Eclipse/STS: `File → Import → Existing Maven Projects`
 - Maven → Update Project (Alt+F5)
 - Run As → Run on Server (Tomcat 10.1)
-- Truy cập: `http://localhost:8080/bai_tap_jpa/login`
+- Truy cập: `http://localhost:8080/bai_tap_02/login`
 
 ## Kiến trúc
 ```
