@@ -1,6 +1,10 @@
 <sitemesh>
+	<!-- decorator="ten_file" duoc tinh tu decorator-prefix mac dinh la
+	     "/WEB-INF/decorators/", KHONG duoc ghi full path o day (se bi
+	     noi thanh /WEB-INF/decorators/WEB-INF/decorators/... va 404). -->
+
 	<!-- Trang login dung layout rieng (khong co navbar vi chua dang nhap) -->
-	<mapping path="/login" decorator="/WEB-INF/decorators/guest.jsp" />
+	<mapping path="/login" decorator="guest.jsp" />
 
 	<!-- Cac duong dan khong phai HTML / khong can trang tri -->
 	<mapping path="/image" exclude="true" />
@@ -8,5 +12,5 @@
 	<mapping path="/logout" exclude="true" />
 
 	<!-- Mac dinh: tat ca trang con lai dung layout chinh (navbar Bootstrap) -->
-	<mapping path="/*" decorator="/WEB-INF/decorators/main.jsp" />
+	<mapping path="/*" decorator="main.jsp" />
 </sitemesh>
