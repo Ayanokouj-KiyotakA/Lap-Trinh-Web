@@ -12,13 +12,25 @@ public class UserDao implements IUserDao {
 	@Override
 	public AppUser findByUserName(String username) {
 		EntityManager enma = JpaConfig.getEntityManager();
-		String jpql = "SELECT u FROM AppUser u WHERE u.userName = :username";
 		try {
+			String jpql = "SELECT u FROM AppUser u WHERE u.userName = :username";
 			TypedQuery<AppUser> query = enma.createQuery(jpql, AppUser.class);
 			query.setParameter("username", username);
 			return query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
+		} finally {
+			enma.close();
+		}
+	}
+
+	@Override
+	public AppUser findById(int id) {
+		EntityManager enma = JpaConfig.getEntityManager();
+		try {
+			return enma.find(AppUser.class, id);
+		} finally {
+			enma.close();
 		}
 	}
 
@@ -29,6 +41,23 @@ public class UserDao implements IUserDao {
 		try {
 			trans.begin();
 			enma.persist(user);
+			trans.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			trans.rollback();
+			throw e;
+		} finally {
+			enma.close();
+		}
+	}
+
+	@Override
+	public void update(AppUser user) {
+		EntityManager enma = JpaConfig.getEntityManager();
+		EntityTransaction trans = enma.getTransaction();
+		try {
+			trans.begin();
+			enma.merge(user);
 			trans.commit();
 		} catch (Exception e) {
 			e.printStackTrace();

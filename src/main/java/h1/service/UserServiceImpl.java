@@ -20,4 +20,14 @@ public class UserServiceImpl implements IUserService {
 	public AppUser findByUserName(String username) {
 		return userDao.findByUserName(username);
 	}
+
+	@Override
+	public AppUser findById(int id) {
+		return userDao.findById(id);
+	}
+
+	@Override
+	public void update(AppUser user) {
+		userDao.update(user);
+	}
 }
