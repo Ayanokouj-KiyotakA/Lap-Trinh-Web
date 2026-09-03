@@ -1,0 +1,12 @@
+<sitemesh>
+	<!-- Trang login dung layout rieng (khong co navbar vi chua dang nhap) -->
+	<mapping path="/login" decorator="/WEB-INF/decorators/guest.jsp" />
+
+	<!-- Cac duong dan khong phai HTML / khong can trang tri -->
+	<mapping path="/image" exclude="true" />
+	<mapping path="/waiting" exclude="true" />
+	<mapping path="/logout" exclude="true" />
+
+	<!-- Mac dinh: tat ca trang con lai dung layout chinh (navbar Bootstrap) -->
+	<mapping path="/*" decorator="/WEB-INF/decorators/main.jsp" />
+</sitemesh>

@@ -3,17 +3,26 @@
 <html>
 <head><title>Đăng nhập</title></head>
 <body>
-    <h2>Đăng nhập</h2>
+    <h4 class="mb-3 text-center">Đăng nhập</h4>
 
     <c:if test="${alert != null}">
-        <p style="color:red">${alert}</p>
+        <div class="alert alert-danger py-2">${alert}</div>
     </c:if>
 
-    <form action="${pageContext.request.contextPath}/login" method="post">
-        Tài khoản: <input type="text" name="username"><br>
-        Mật khẩu: <input type="password" name="password"><br>
-        <input type="checkbox" name="remember"> Nhớ tôi (Cookie)<br>
-        <button type="submit">Đăng nhập</button>
+    <form action="${pageContext.request.contextPath}/login" method="post" novalidate>
+        <div class="mb-3">
+            <label class="form-label">Tài khoản</label>
+            <input type="text" class="form-control" name="username" required autofocus>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mật khẩu</label>
+            <input type="password" class="form-control" name="password" required>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" name="remember" id="remember">
+            <label class="form-check-label" for="remember">Nhớ tôi (Cookie)</label>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
     </form>
 </body>
 </html>
