@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Paths;
 
 import h1.config.Constant;
 import jakarta.servlet.ServletException;
@@ -24,6 +25,10 @@ public class DownloadImageController extends HttpServlet {
 		if (fileName == null || fileName.isEmpty()) {
 			return;
 		}
+
+		// Chi lay ten file (bo moi thanh phan thu muc) de chan path traversal
+		// (vd fname=../../../../Windows/win.ini) truy cap file ngoai Constant.DIR
+		fileName = Paths.get(fileName).getFileName().toString();
 
 		File file = new File(Constant.DIR + "/" + fileName);
 		if (file.exists()) {
