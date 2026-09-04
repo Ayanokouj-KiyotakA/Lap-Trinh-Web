@@ -50,8 +50,13 @@ public class AppUser implements Serializable {
 	private Date createdDate;
 
 	// Trang thai kich hoat tai khoan: 0 = chua kich hoat (moi dang ky, cho OTP),
-	// 1 = da kich hoat (duoc phep dang nhap)
-	@Column(name = "active")
+	// 1 = da kich hoat (duoc phep dang nhap).
+	// QUAN TRONG: columnDefinition co "DEFAULT 1" de khi Hibernate ALTER TABLE
+	// them cot nay, cac tai khoan da tao tu truoc (vd admin/trungnh trong
+	// seed_data.sql cua bai tap 02) tu dong duoc backfill active=1, khong bi
+	// khoa dang nhap va khong bi NullPointerException khi doc cot NULL vao
+	// kieu int nguyen thuy.
+	@Column(name = "active", columnDefinition = "INT NOT NULL DEFAULT 1")
 	private int active;
 
 	// Ma OTP dang cho xac nhan, dung chung cho ca kich hoat dang ky lan quen mat
