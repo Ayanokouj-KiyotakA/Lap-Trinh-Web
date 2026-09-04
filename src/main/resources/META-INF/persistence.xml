@@ -7,6 +7,7 @@
 	<persistence-unit name="jpa-hibernate-sqlserver">
 		<class>h1.entity.Category</class>
 		<class>h1.entity.AppUser</class>
+		<class>h1.entity.Product</class>
 		<properties>
 			<property name="jakarta.persistence.jdbc.url"
 				value="jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=QLJPA" />
