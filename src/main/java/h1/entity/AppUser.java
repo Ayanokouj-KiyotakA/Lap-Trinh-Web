@@ -49,6 +49,20 @@ public class AppUser implements Serializable {
 	@Column(name = "createdDate")
 	private Date createdDate;
 
+	// Trang thai kich hoat tai khoan: 0 = chua kich hoat (moi dang ky, cho OTP),
+	// 1 = da kich hoat (duoc phep dang nhap)
+	@Column(name = "active")
+	private int active;
+
+	// Ma OTP dang cho xac nhan, dung chung cho ca kich hoat dang ky lan quen mat
+	// khau (tai 1 thoi diem user chi chay 1 luong nen khong can tach rieng)
+	@Column(name = "otpCode", columnDefinition = "NVARCHAR(10) NULL")
+	private String otpCode;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "otpExpiredAt")
+	private Date otpExpiredAt;
+
 	public AppUser() {
 	}
 
@@ -122,5 +136,29 @@ public class AppUser implements Serializable {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
+	public String getOtpCode() {
+		return otpCode;
+	}
+
+	public void setOtpCode(String otpCode) {
+		this.otpCode = otpCode;
+	}
+
+	public Date getOtpExpiredAt() {
+		return otpExpiredAt;
+	}
+
+	public void setOtpExpiredAt(Date otpExpiredAt) {
+		this.otpExpiredAt = otpExpiredAt;
 	}
 }
