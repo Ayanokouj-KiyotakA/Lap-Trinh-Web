@@ -60,4 +60,19 @@ public class ProductServiceImpl implements IProductService {
 	public List<Product> findAll(int page, int pagesize) {
 		return productDao.findAll(page, pagesize);
 	}
+
+	@Override
+	public List<Product> findAllActive(int page, int pagesize) {
+		return productDao.findAllActive(page, pagesize);
+	}
+
+	@Override
+	public int countActive() {
+		return productDao.countActive();
+	}
+
+	@Override
+	public List<Product> findLatestActive(int limit) {
+		return productDao.findLatestActive(limit);
+	}
 }

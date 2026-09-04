@@ -2,20 +2,12 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <html>
-<head><title>Trang chủ</title></head>
+<head><title>Sản phẩm</title></head>
 <body>
-    <div class="p-4 bg-white border rounded mb-4">
-        <h2>Xin chào, ${sessionScope.account.userName}</h2>
-        <p class="text-muted mb-0">roleid = ${sessionScope.account.roleid}</p>
-    </div>
+    <h3 class="mb-3">Sản phẩm</h3>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="mb-0">Sản phẩm mới nhất</h4>
-        <a class="btn btn-sm btn-outline-primary" href="<c:url value='/product'/>">Xem tất cả</a>
-    </div>
-
-    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
-        <c:forEach items="${latestProducts}" var="product">
+    <div class="row row-cols-2 row-cols-md-3 g-3 mb-4">
+        <c:forEach items="${listproduct}" var="product">
             <div class="col">
                 <a class="text-decoration-none text-dark"
                    href="<c:url value='/product/detail?id=${product.productId}'/>">
@@ -26,9 +18,10 @@
                         <c:if test="${product.images.substring(0,5)!='https'}">
                             <c:url value="/image?fname=${product.images}" var="imgUrl"></c:url>
                         </c:if>
-                        <img src="${imgUrl}" class="card-img-top" style="height:140px;object-fit:cover">
-                        <div class="card-body p-2">
-                            <div class="small text-truncate">${product.productname}</div>
+                        <img src="${imgUrl}" class="card-img-top" style="height:180px;object-fit:cover">
+                        <div class="card-body">
+                            <div class="mb-1">${product.productname}</div>
+                            <div class="text-muted small mb-1">${product.category.categoryname}</div>
                             <div class="fw-bold text-primary">
                                 <fmt:formatNumber value="${product.price}" type="number" groupingUsed="true" /> đ
                             </div>
@@ -37,9 +30,21 @@
                 </a>
             </div>
         </c:forEach>
-        <c:if test="${empty latestProducts}">
+        <c:if test="${empty listproduct}">
             <p class="text-muted">Chưa có sản phẩm nào.</p>
         </c:if>
     </div>
+
+    <c:if test="${totalPages > 1}">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <c:forEach begin="1" end="${totalPages}" var="p">
+                    <li class="page-item ${p == page ? 'active' : ''}">
+                        <a class="page-link" href="<c:url value='/product?page=${p}'/>">${p}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </nav>
+    </c:if>
 </body>
 </html>

@@ -19,6 +19,9 @@
 			</button>
 			<div class="collapse navbar-collapse" id="mainNav">
 				<ul class="navbar-nav me-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="<c:url value='/product'/>">Sản phẩm</a>
+					</li>
 					<c:if test="${sessionScope.account != null}">
 						<c:choose>
 							<c:when test="${sessionScope.account.roleid == 1}">

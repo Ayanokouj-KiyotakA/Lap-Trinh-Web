@@ -89,6 +89,33 @@ public class ProductDao implements IProductDao {
 	}
 
 	@Override
+	public List<Product> findAllActive(int page, int pagesize) {
+		EntityManager enma = JpaConfig.getEntityManager();
+		String jpql = "SELECT p FROM Product p WHERE p.status = 1 ORDER BY p.createdDate DESC";
+		TypedQuery<Product> query = enma.createQuery(jpql, Product.class);
+		query.setFirstResult(page * pagesize);
+		query.setMaxResults(pagesize);
+		return query.getResultList();
+	}
+
+	@Override
+	public int countActive() {
+		EntityManager enma = JpaConfig.getEntityManager();
+		String jpql = "SELECT count(p) FROM Product p WHERE p.status = 1";
+		Query query = enma.createQuery(jpql);
+		return ((Long) query.getSingleResult()).intValue();
+	}
+
+	@Override
+	public List<Product> findLatestActive(int limit) {
+		EntityManager enma = JpaConfig.getEntityManager();
+		String jpql = "SELECT p FROM Product p WHERE p.status = 1 ORDER BY p.createdDate DESC";
+		TypedQuery<Product> query = enma.createQuery(jpql, Product.class);
+		query.setMaxResults(limit);
+		return query.getResultList();
+	}
+
+	@Override
 	public List<Product> searchByName(String name) {
 		EntityManager enma = JpaConfig.getEntityManager();
 		String jpql = "SELECT p FROM Product p WHERE p.productname LIKE :name";

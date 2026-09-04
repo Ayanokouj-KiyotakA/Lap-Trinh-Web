@@ -17,6 +17,12 @@ public interface IProductService {
 
 	List<Product> findLatest(int limit);
 
+	List<Product> findAllActive(int page, int pagesize);
+
+	int countActive();
+
+	List<Product> findLatestActive(int limit);
+
 	Product findById(int productId);
 
 	void delete(int productId);
