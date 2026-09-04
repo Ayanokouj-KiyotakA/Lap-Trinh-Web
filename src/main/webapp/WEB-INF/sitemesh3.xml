@@ -8,6 +8,8 @@
 	<mapping path="/login" decorator="guest.jsp" />
 	<mapping path="/register" decorator="guest.jsp" />
 	<mapping path="/verify-otp" decorator="guest.jsp" />
+	<mapping path="/forgot-password" decorator="guest.jsp" />
+	<mapping path="/reset-password" decorator="guest.jsp" />
 
 	<!-- Cac duong dan khong phai HTML / khong can trang tri -->
 	<mapping path="/image" exclude="true" />
