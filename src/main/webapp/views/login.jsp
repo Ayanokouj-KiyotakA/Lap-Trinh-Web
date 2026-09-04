@@ -8,6 +8,9 @@
     <c:if test="${alert != null}">
         <div class="alert alert-danger py-2">${alert}</div>
     </c:if>
+    <c:if test="${notice != null}">
+        <div class="alert alert-success py-2">${notice}</div>
+    </c:if>
 
     <form action="${pageContext.request.contextPath}/login" method="post" novalidate>
         <div class="mb-3">

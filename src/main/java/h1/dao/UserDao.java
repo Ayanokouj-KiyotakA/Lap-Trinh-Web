@@ -25,6 +25,21 @@ public class UserDao implements IUserDao {
 	}
 
 	@Override
+	public AppUser findByEmail(String email) {
+		EntityManager enma = JpaConfig.getEntityManager();
+		try {
+			String jpql = "SELECT u FROM AppUser u WHERE u.email = :email";
+			TypedQuery<AppUser> query = enma.createQuery(jpql, AppUser.class);
+			query.setParameter("email", email);
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		} finally {
+			enma.close();
+		}
+	}
+
+	@Override
 	public AppUser findById(int id) {
 		EntityManager enma = JpaConfig.getEntityManager();
 		try {

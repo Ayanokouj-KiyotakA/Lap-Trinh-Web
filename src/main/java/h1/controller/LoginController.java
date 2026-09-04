@@ -39,6 +39,14 @@ public class LoginController extends HttpServlet {
 			}
 		}
 
+		if (session != null) {
+			Object notice = session.getAttribute("notice");
+			if (notice != null) {
+				req.setAttribute("notice", notice);
+				session.removeAttribute("notice");
+			}
+		}
+
 		req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
 	}
 

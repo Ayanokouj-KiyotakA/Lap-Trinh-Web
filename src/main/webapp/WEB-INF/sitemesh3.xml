@@ -3,8 +3,11 @@
 	     "/WEB-INF/decorators/", KHONG duoc ghi full path o day (se bi
 	     noi thanh /WEB-INF/decorators/WEB-INF/decorators/... va 404). -->
 
-	<!-- Trang login dung layout rieng (khong co navbar vi chua dang nhap) -->
+	<!-- Cac trang chua dang nhap (login, dang ky, xac nhan OTP...) dung layout
+	     rieng (khong co navbar) -->
 	<mapping path="/login" decorator="guest.jsp" />
+	<mapping path="/register" decorator="guest.jsp" />
+	<mapping path="/verify-otp" decorator="guest.jsp" />
 
 	<!-- Cac duong dan khong phai HTML / khong can trang tri -->
 	<mapping path="/image" exclude="true" />
