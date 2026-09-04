@@ -6,7 +6,12 @@
     <h4 class="mb-3 text-center">Đăng nhập</h4>
 
     <c:if test="${alert != null}">
-        <div class="alert alert-danger py-2">${alert}</div>
+        <div class="alert alert-danger py-2">
+            ${alert}
+            <c:if test="${needVerify == true}">
+                <a href="${pageContext.request.contextPath}/verify-otp" class="alert-link">Xác nhận OTP ngay</a>
+            </c:if>
+        </div>
     </c:if>
     <c:if test="${notice != null}">
         <div class="alert alert-success py-2">${notice}</div>
@@ -27,5 +32,10 @@
         </div>
         <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
     </form>
+
+    <div class="d-flex justify-content-between mt-3">
+        <a href="${pageContext.request.contextPath}/register">Đăng ký tài khoản</a>
+        <a href="${pageContext.request.contextPath}/forgot-password">Quên mật khẩu?</a>
+    </div>
 </body>
 </html>

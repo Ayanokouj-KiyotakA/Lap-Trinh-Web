@@ -76,18 +76,29 @@ public class LoginController extends HttpServlet {
 		IUserService service = new UserServiceImpl();
 		AppUser user = service.login(username, password);
 
-		if (user != null) {
-			HttpSession session = req.getSession(true);
-			session.setAttribute("account", user);
-			if (isRememberMe) {
-				saveRemeberMe(resp, username);
-			}
-			resp.sendRedirect(req.getContextPath() + "/waiting");
-		} else {
+		if (user == null) {
 			alertMsg = "Tài khoản hoặc mật khẩu không đúng";
 			req.setAttribute("alert", alertMsg);
 			req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+			return;
 		}
+
+		if (user.getActive() != 1) {
+			HttpSession pendingSession = req.getSession(true);
+			pendingSession.setAttribute("pendingEmail", user.getEmail());
+			alertMsg = "Tài khoản chưa được kích hoạt. Vui lòng kiểm tra email để lấy mã OTP.";
+			req.setAttribute("alert", alertMsg);
+			req.setAttribute("needVerify", true);
+			req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+			return;
+		}
+
+		HttpSession session = req.getSession(true);
+		session.setAttribute("account", user);
+		if (isRememberMe) {
+			saveRemeberMe(resp, username);
+		}
+		resp.sendRedirect(req.getContextPath() + "/waiting");
 	}
 
 	private void saveRemeberMe(HttpServletResponse response, String username) {
