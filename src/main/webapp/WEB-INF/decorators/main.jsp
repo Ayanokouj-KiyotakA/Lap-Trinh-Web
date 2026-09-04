@@ -28,6 +28,9 @@
 								<li class="nav-item">
 									<a class="nav-link" href="<c:url value='/admin/categories'/>">Quản lý danh mục</a>
 								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="<c:url value='/admin/products'/>">Quản lý sản phẩm</a>
+								</li>
 							</c:when>
 							<c:otherwise>
 								<li class="nav-item">
