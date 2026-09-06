@@ -10,7 +10,11 @@
 
             <div class="mb-3">
                 <label class="form-label">Tên sản phẩm</label>
-                <input type="text" class="form-control" name="productname" value="${product.productname}" required>
+                <input type="text" class="form-control ${errors.productname != null ? 'is-invalid' : ''}"
+                       name="productname" value="${product.productname}" required>
+                <c:if test="${errors.productname != null}">
+                    <div class="invalid-feedback">${errors.productname}</div>
+                </c:if>
             </div>
 
             <div class="mb-3">
@@ -20,16 +24,23 @@
 
             <div class="mb-3">
                 <label class="form-label">Giá</label>
-                <input type="number" step="0.01" min="0" class="form-control" name="price" value="${product.price}" required>
+                <input type="number" step="0.01" min="0" class="form-control ${errors.price != null ? 'is-invalid' : ''}"
+                       name="price" value="${product.price}" required>
+                <c:if test="${errors.price != null}">
+                    <div class="invalid-feedback">${errors.price}</div>
+                </c:if>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Danh mục</label>
-                <select class="form-select" name="categoryid" required>
+                <select class="form-select ${errors.categoryid != null ? 'is-invalid' : ''}" name="categoryid" required>
                     <c:forEach items="${listcate}" var="c">
                         <option value="${c.categoryId}" ${c.categoryId == product.category.categoryId ? 'selected' : ''}>${c.categoryname}</option>
                     </c:forEach>
                 </select>
+                <c:if test="${errors.categoryid != null}">
+                    <div class="invalid-feedback">${errors.categoryid}</div>
+                </c:if>
             </div>
 
             <div class="mb-3">
@@ -60,6 +71,9 @@
                     <input class="form-check-input" type="radio" name="status" id="statusOff" value="0" ${product.status != 1 ? 'checked' : ''}>
                     <label class="form-check-label" for="statusOff">Khóa</label>
                 </div>
+                <c:if test="${errors.status != null}">
+                    <div class="text-danger small mt-1">${errors.status}</div>
+                </c:if>
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>

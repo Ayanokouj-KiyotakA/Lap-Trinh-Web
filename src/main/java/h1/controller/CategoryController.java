@@ -7,7 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import h1.config.Constant;
 import h1.entity.Category;
@@ -51,16 +53,26 @@ public class CategoryController extends HttpServlet {
 		} else if (url.contains("/admin/category/add")) {
 			req.getRequestDispatcher("/views/admin/category-add.jsp").forward(req, resp);
 		} else if (url.contains("/admin/category/edit")) {
-			int id = Integer.parseInt(req.getParameter("id"));
+			Integer id = parseIntOrNull(req.getParameter("id"));
+			if (id == null) {
+				resp.sendRedirect(req.getContextPath() + "/admin/categories");
+				return;
+			}
 			Category category = cateService.findById(id);
+			if (category == null) {
+				resp.sendRedirect(req.getContextPath() + "/admin/categories");
+				return;
+			}
 			req.setAttribute("cate", category);
 			req.getRequestDispatcher("/views/admin/category-edit.jsp").forward(req, resp);
 		} else {
-			int id = Integer.parseInt(req.getParameter("id"));
-			try {
-				cateService.delete(id);
-			} catch (Exception e) {
-				e.printStackTrace();
+			Integer id = parseIntOrNull(req.getParameter("id"));
+			if (id != null) {
+				try {
+					cateService.delete(id);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			resp.sendRedirect(req.getContextPath() + "/admin/categories");
 		}
@@ -74,12 +86,25 @@ public class CategoryController extends HttpServlet {
 		String url = req.getRequestURI();
 		if (url.contains("/admin/category/insert")) {
 			String categoryname = getPartValue(req.getPart("categoryname"));
-			int status = Integer.parseInt(req.getParameter("status"));
+			String statusParam = req.getParameter("status");
 			String images = getPartValue(req.getPart("images")); // link ảnh (nếu người dùng nhập thay vì upload)
 
+			Map<String, String> errors = validate(categoryname, statusParam);
+			if (errors.isEmpty() && cateService.findByCategoryname(categoryname.trim()) != null) {
+				errors.put("categoryname", "Tên category đã tồn tại");
+			}
+			if (!errors.isEmpty()) {
+				req.setAttribute("errors", errors);
+				req.setAttribute("categoryname", categoryname);
+				req.setAttribute("images", images);
+				req.setAttribute("status", statusParam);
+				req.getRequestDispatcher("/views/admin/category-add.jsp").forward(req, resp);
+				return;
+			}
+
 			Category category = new Category();
-			category.setCategoryname(categoryname);
-			category.setStatus(status);
+			category.setCategoryname(categoryname.trim());
+			category.setStatus(Integer.parseInt(statusParam));
 
 			String uploadPath = Constant.DIR;
 			File uploadDir = new File(uploadPath);
@@ -113,15 +138,39 @@ public class CategoryController extends HttpServlet {
 		}
 
 		if (url.contains("/admin/category/update")) {
-			int categoryid = Integer.parseInt(getPartValue(req.getPart("categoryid")));
+			Integer categoryid = parseIntOrNull(getPartValue(req.getPart("categoryid")));
 			String categoryname = getPartValue(req.getPart("categoryname"));
-			int status = Integer.parseInt(req.getParameter("status"));
+			String statusParam = req.getParameter("status");
 			String images = getPartValue(req.getPart("images"));
 
+			if (categoryid == null) {
+				resp.sendRedirect(req.getContextPath() + "/admin/categories");
+				return;
+			}
 			Category category = cateService.findById(categoryid);
+			if (category == null) {
+				resp.sendRedirect(req.getContextPath() + "/admin/categories");
+				return;
+			}
+
+			Map<String, String> errors = validate(categoryname, statusParam);
+			Category duplicate = cateService.findByCategoryname(categoryname == null ? "" : categoryname.trim());
+			if (errors.isEmpty() && duplicate != null && duplicate.getCategoryId() != categoryid) {
+				errors.put("categoryname", "Tên category đã tồn tại");
+			}
+			if (!errors.isEmpty()) {
+				// Giu lai gia tri vua nhap (chua luu) de hien thi lai form, khong mat
+				// du lieu category goc trong DB
+				category.setCategoryname(categoryname);
+				req.setAttribute("errors", errors);
+				req.setAttribute("cate", category);
+				req.getRequestDispatcher("/views/admin/category-edit.jsp").forward(req, resp);
+				return;
+			}
+
 			String fileold = category.getImages();
-			category.setCategoryname(categoryname);
-			category.setStatus(status);
+			category.setCategoryname(categoryname.trim());
+			category.setStatus(Integer.parseInt(statusParam));
 
 			String uploadPath = Constant.DIR;
 			File uploadDir = new File(uploadPath);
@@ -153,6 +202,28 @@ public class CategoryController extends HttpServlet {
 
 			cateService.update(category);
 			resp.sendRedirect(req.getContextPath() + "/admin/categories");
+		}
+	}
+
+	// Bai tap 04 - yeu cau 2: validate form them/sua Category
+	private Map<String, String> validate(String categoryname, String statusParam) {
+		Map<String, String> errors = new LinkedHashMap<>();
+		if (categoryname == null || categoryname.trim().isEmpty()) {
+			errors.put("categoryname", "Tên category không được để trống");
+		} else if (categoryname.trim().length() > 255) {
+			errors.put("categoryname", "Tên category tối đa 255 ký tự");
+		}
+		if (!"0".equals(statusParam) && !"1".equals(statusParam)) {
+			errors.put("status", "Vui lòng chọn trạng thái hợp lệ");
+		}
+		return errors;
+	}
+
+	private Integer parseIntOrNull(String value) {
+		try {
+			return Integer.parseInt(value.trim());
+		} catch (Exception e) {
+			return null;
 		}
 	}
 
