@@ -3,8 +3,13 @@
 	     "/WEB-INF/decorators/", KHONG duoc ghi full path o day (se bi
 	     noi thanh /WEB-INF/decorators/WEB-INF/decorators/... va 404). -->
 
-	<!-- Cac trang chua dang nhap (login, dang ky, xac nhan OTP...) dung layout
-	     rieng (khong co navbar) -->
+	<!-- Bai tap 04 - yeu cau 1: tich hop SiteMesh Decorator 3 (1 template
+	     Bootstrap duy nhat cho toan bo giao dien: main.jsp co navbar,
+	     guest.jsp khong navbar) vao TOAN BO cac trang cua bai tap 03
+	     (dang ky/OTP kich hoat, quen mat khau/OTP, danh sach+chi tiet
+	     Product cong khai, CRUD Product o admin). Cac trang chua dang
+	     nhap (login, dang ky, xac nhan OTP, quen/dat lai mat khau) dung
+	     layout rieng (khong co navbar) -->
 	<mapping path="/login" decorator="guest.jsp" />
 	<mapping path="/register" decorator="guest.jsp" />
 	<mapping path="/verify-otp" decorator="guest.jsp" />
@@ -16,6 +21,9 @@
 	<mapping path="/waiting" exclude="true" />
 	<mapping path="/logout" exclude="true" />
 
-	<!-- Mac dinh: tat ca trang con lai dung layout chinh (navbar Bootstrap) -->
+	<!-- Mac dinh: tat ca trang con lai (bao gom /home, /product,
+	     /product/detail, /admin/categories, /admin/products va cac
+	     trang CRUD admin cua bai tap 03) dung layout chinh (navbar
+	     Bootstrap) -->
 	<mapping path="/*" decorator="main.jsp" />
 </sitemesh>
